@@ -232,7 +232,7 @@ namespace Photon.Pun.Demo.Asteroids
             SetActivePanel(RoomListPanel.name);
         }
 
-        public void OnBackButtonClicked()               // CreateRoomPanel - CancelButton
+        public void OnBackButtonClicked()               // CreateRoomPanel - CancelButton, RoomListPanel - BackButton
         {
             if (PhotonNetwork.InLobby)
             {
@@ -242,7 +242,7 @@ namespace Photon.Pun.Demo.Asteroids
             SetActivePanel(SelectionPanel.name);
         }
 
-        public void TextForSlider()
+        public void ApplyTextForSlider()
         {
             NowPlayersText.text = MaxPlayerSlider.value.ToString();
         }
@@ -261,12 +261,12 @@ namespace Photon.Pun.Demo.Asteroids
             PhotonNetwork.CreateRoom(roomName, options, null);
         }        
 
-        public void OnLeaveGameButtonClicked()
+        public void OnLeaveGameButtonClicked()          // InsideRoomPanel - LeaveGameButton
         {
             PhotonNetwork.LeaveRoom();
         }
 
-        public void OnStartGameButtonClicked()
+        public void OnStartGameButtonClicked()          // InsideRoomPanel - StartGameButton
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
