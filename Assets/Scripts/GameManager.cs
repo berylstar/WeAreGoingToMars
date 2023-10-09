@@ -1,18 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GameManager Instance { get; private set; }
+
+    [Header("Clock")]
+    [SerializeField] private TextMeshProUGUI textClock;
+    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
+    private int hh = 0;
+    private int mm = 0;
+
+    [Header("Wallet")]
+    [SerializeField] private TextMeshProUGUI textWallet;
+    [SerializeField] private List<TextMeshProUGUI> textAmountOfStacks;
+
+    [Header("ScoreBoard")]
+    [SerializeField] private Button buttonScoreBoard;
+    [SerializeField] private GameObject panelScoreBoard;
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        StartCoroutine(StartTime());
+    }
+
+    private IEnumerator StartTime()
+    {
+        while (true)
+        {
+            mm += 1;
+
+            if (mm == 60)
+            {
+                hh += 1;
+                mm = 0;
+            }
+
+            textClock.text = $"{hh:D2} : {mm:D2}";
+            yield return oneSecond;
+        }
+    }
+
+    public void ToggleScoreBoard()
+    {
+        panelScoreBoard.SetActive(!panelScoreBoard.activeInHierarchy);
     }
 }
