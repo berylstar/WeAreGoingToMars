@@ -18,12 +18,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [Header("Wallet")]
     [SerializeField] private TextMeshProUGUI textWallet;
-    [SerializeField] private List<TextMeshProUGUI> textAmountOfStacks;
+    [SerializeField] private List<TextMeshProUGUI> textStackHoldings;
 
     [Header("ScoreBoard")]
     [SerializeField] private Button buttonScoreBoard;
     public GameObject panelScoreBoard;
     private readonly string playerBoard = "PlayerBoard";
+
+    [Header("Stock")]
+    public List<Stock> stocks;
 
     private void Awake()
     {
@@ -55,8 +58,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         return null;
     }
 
-    public void GetStock(int index)
+    public void ShowMyStatus()
     {
-        FindMyBoard().stocks[index] += 1;
+        PlayerBoard player = FindMyBoard();
+
+        textWallet.text = $"{player.money} $";
+
+        for (int i = 0; i < 5; i++)
+        {
+            textStackHoldings[i].text = player.stockHoldings[i].ToString();
+        }
+    }
+
+    public void OnBuyStockButton(int index)
+    {
+        FindMyBoard().TryBuyStock(stocks[index]);
+        ShowMyStatus();
+    }
+
+    public void OnSellStockButton(int index)
+    {
+        FindMyBoard().TrySellStock(stocks[index]);
+        ShowMyStatus();
     }
 }

@@ -949,8 +949,8 @@ MonoBehaviour:
   - {fileID: 7059176460555387844}
   - {fileID: 7111793589430468255}
   - {fileID: 7894000737646398285}
-  money: 0
-  stocks: 0000000000000000000000000000000000000000
+  money: 2000
+  stockHoldings: 0000000000000000000000000000000000000000
 --- !u!114 &7052138386403087455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,7 +971,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4477987186704783179}
-  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -13,7 +13,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private List<TextMeshProUGUI> textWallets;
 
     public int money;
-    public List<int> stocks;
+    public List<int> stockHoldings;
 
     private void Start()
     {
@@ -29,7 +29,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
         for (int i = 0; i < 5; i++)
         {
-            textWallets[i].text = stocks[i].ToString();
+            textWallets[i].text = stockHoldings[i].ToString();
         }
     }
 
@@ -41,7 +41,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
             for (int i = 0; i < 5; i++)
             {
-                stream.SendNext(stocks[i]);
+                stream.SendNext(stockHoldings[i]);
             }
         }
         else
@@ -50,8 +50,26 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
             for (int i = 0; i < 5; i++)
             {
-                stocks[i] = (int)stream.ReceiveNext();
+                stockHoldings[i] = (int)stream.ReceiveNext();
             }
+        }
+    }
+
+    public void TryBuyStock(Stock stock)
+    {
+        if (money >= stock.costNow)
+        {
+            money -= stock.costNow;
+            stockHoldings[stock.serialNumber] += 1;
+        }
+    }
+
+    public void TrySellStock(Stock stock)
+    {
+        if (stockHoldings[stock.serialNumber] > 0)
+        {
+            money += stock.costNow;
+            stockHoldings[stock.serialNumber] -= 1;
         }
     }
 }
