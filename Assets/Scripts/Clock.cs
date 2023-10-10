@@ -25,6 +25,11 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
         {
             mm += 1;
 
+            if (mm == 30 || mm == 60)
+            {
+                photonView.RPC("Change", RpcTarget.All);
+            }
+
             if (mm == 60)
             {
                 hh += 1;
@@ -49,5 +54,11 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         GameManager.Instance.textClock.text = $"{hh:D2} : {mm:D2}";
+    }
+
+    [PunRPC]
+    private void Change()
+    {
+        GameManager.Instance.ChangeRound();
     }
 }

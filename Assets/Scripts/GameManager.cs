@@ -70,6 +70,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void ChangeRound()
+    {
+        foreach (Stock stock in stocks)
+        {
+            stock.ChangeStockCost();
+        }
+    }
+
     public void OnBuyStockButton(int index)
     {
         FindMyBoard().TryBuyStock(stocks[index]);

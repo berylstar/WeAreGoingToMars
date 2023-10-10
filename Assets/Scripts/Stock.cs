@@ -46,12 +46,28 @@ public class Stock : MonoBehaviour
     private void SetStock()
     {
         costGraph = new List<int>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            costGraph.Add((i + 1) * 100);
+        }
+
+        nextChange = costGraph[0];
     }
 
     private void ShowStockStatus()
     {
         textCost.text = costNow.ToString();
         textChange.text = ShowCostChange();
+    }
+
+    public void ChangeStockCost()
+    {
+        costNow += nextChange;
+        costGraph.RemoveAt(0);
+        nextChange = costGraph[0];
+
+        ShowStockStatus();
     }
 
     private string ShowCostChange()
