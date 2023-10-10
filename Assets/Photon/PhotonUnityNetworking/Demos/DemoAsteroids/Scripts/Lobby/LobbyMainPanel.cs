@@ -93,9 +93,9 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
-            string roomName = "Room " + Random.Range(1000, 10000);
+            string roomName = $"Room {Random.Range(1000, 10000)}";
 
-            RoomOptions options = new RoomOptions {MaxPlayers = 8};
+            RoomOptions options = new RoomOptions {MaxPlayers = 5};
 
             PhotonNetwork.CreateRoom(roomName, options, null);
         }
