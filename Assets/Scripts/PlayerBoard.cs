@@ -18,6 +18,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     private void Start()
     {
         gameObject.transform.SetParent(GameManager.Instance.panelScoreBoard.transform);
+        gameObject.transform.localScale = Vector3.one;
 
         textName.text = gameObject.GetPhotonView().Owner.NickName;
     }

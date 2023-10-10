@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void ToggleScoreBoard()
     {
-        panelScoreBoard.SetActive(!panelScoreBoard.activeInHierarchy);
+        panelScoreBoard.transform.localScale = (panelScoreBoard.transform.localScale == Vector3.zero)? Vector3.one : Vector3.zero;
     }
 
     private PlayerBoard FindMyBoard()
