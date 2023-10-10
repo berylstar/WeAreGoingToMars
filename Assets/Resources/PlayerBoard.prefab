@@ -443,7 +443,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 75}
+  m_SizeDelta: {x: 250, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4215734596131616043
 CanvasRenderer:
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 19f4ffca309905a4ea182d96a2e8e5df, type: 2}
   m_sharedMaterial: {fileID: 3009678117575462755, guid: 19f4ffca309905a4ea182d96a2e8e5df, type: 2}
@@ -863,7 +863,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1400, y: 80}
+  m_SizeDelta: {x: 1500, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &992193000866890886
 MonoBehaviour:
@@ -949,6 +949,8 @@ MonoBehaviour:
   - {fileID: 7059176460555387844}
   - {fileID: 7111793589430468255}
   - {fileID: 7894000737646398285}
+  money: 2000
+  stockHoldings: 0000000000000000000000000000000000000000
 --- !u!114 &7052138386403087455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -967,7 +969,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4477987186704783179}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

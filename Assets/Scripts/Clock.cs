@@ -2,17 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock : MonoBehaviour
+using Photon.Pun;
+
+public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 {
-    // Start is called before the first frame update
-    void Start()
+    private int hh = 0;
+    private int mm = 0;
+
+    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
+
+    private void Start()
     {
-        
+        if (photonView.AmOwner)
+        {
+            StartCoroutine(StartTime());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator StartTime()
     {
-        
+        while (true)
+        {
+            mm += 1;
+
+            if (mm == 60)
+            {
+                hh += 1;
+                mm = 0;
+            }
+
+            yield return oneSecond;
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(hh);
+            stream.SendNext(mm);
+        }
+        else
+        {
+            hh = (int)stream.ReceiveNext();
+            mm = (int)stream.ReceiveNext();
+        }
+
+        GameManager.Instance.textClock.text = $"{hh:D2} : {mm:D2}";
     }
 }

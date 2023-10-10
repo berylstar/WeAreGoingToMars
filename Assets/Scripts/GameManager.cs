@@ -6,25 +6,27 @@ using TMPro;
 
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance { get; private set; }
 
     [Header("Clock")]
-    [SerializeField] private TextMeshProUGUI textClock;
-    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
-    private int hh = 0;
-    private int mm = 0;
+    public TextMeshProUGUI textClock;
+    private readonly string clock = "Clock";
 
     [Header("Wallet")]
     [SerializeField] private TextMeshProUGUI textWallet;
-    [SerializeField] private List<TextMeshProUGUI> textAmountOfStacks;
+    [SerializeField] private List<TextMeshProUGUI> textStackHoldings;
 
     [Header("ScoreBoard")]
     [SerializeField] private Button buttonScoreBoard;
-    [SerializeField] private GameObject panelScoreBoard;
-    [SerializeField] private Transform playerBoardHolder;
-    [SerializeField] private GameObject playerBoard;
+    public GameObject panelScoreBoard;
+    private readonly string playerBoard = "PlayerBoard";
+
+    [Header("Stock")]
+    public List<Stock> stocks;
 
     private void Awake()
     {
@@ -33,43 +35,50 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(StartTime());
-        GameObject obj = PhotonNetwork.Instantiate("PlayerBoard", Vector3.zero, Quaternion.identity);
-        obj.transform.SetParent(playerBoardHolder);
-    }
+        PhotonNetwork.Instantiate(playerBoard, Vector3.zero, Quaternion.identity);
 
-    private void Update()
-    {
-        ShowPlayersStatus();
-    }
-
-    private void ShowPlayersStatus()
-    {
-        foreach (Transform child in panelScoreBoard.transform.GetChild(0))
+        if (photonView.AmOwner)
         {
-            print(child.name);
+            PhotonNetwork.Instantiate(clock, Vector3.zero, Quaternion.identity);
         }
     }
 
-    //private IEnumerator StartTime()
-    //{
-    //    while (true)
-    //    {
-    //        mm += 1;
-
-    //        if (mm == 60)
-    //        {
-    //            hh += 1;
-    //            mm = 0;
-    //        }
-
-    //        textClock.text = $"{hh:D2} : {mm:D2}";
-    //        yield return oneSecond;
-    //    }
-    //}
-
     public void ToggleScoreBoard()
     {
-        panelScoreBoard.SetActive(!panelScoreBoard.activeInHierarchy);
+        panelScoreBoard.transform.localScale = (panelScoreBoard.transform.localScale == Vector3.zero)? Vector3.one : Vector3.zero;
+    }
+
+    private PlayerBoard FindMyBoard()
+    {
+        foreach (Transform tf in panelScoreBoard.transform)
+        {
+            if (tf.gameObject.GetPhotonView().IsMine)
+                return tf.gameObject.GetComponent<PlayerBoard>();
+        }
+        return null;
+    }
+
+    public void ShowMyStatus()
+    {
+        PlayerBoard player = FindMyBoard();
+
+        textWallet.text = $"{player.money} $";
+
+        for (int i = 0; i < 5; i++)
+        {
+            textStackHoldings[i].text = player.stockHoldings[i].ToString();
+        }
+    }
+
+    public void OnBuyStockButton(int index)
+    {
+        FindMyBoard().TryBuyStock(stocks[index]);
+        ShowMyStatus();
+    }
+
+    public void OnSellStockButton(int index)
+    {
+        FindMyBoard().TrySellStock(stocks[index]);
+        ShowMyStatus();
     }
 }
