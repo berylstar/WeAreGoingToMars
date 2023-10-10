@@ -37,19 +37,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartTime());
     }
 
-    //private void Update()
-    //{
-    //    ShowPlayersStatus();
-    //}
-
-    //private void ShowPlayersStatus()
-    //{
-    //    foreach (Transform child in panelScoreBoard.transform)
-    //    {
-    //        child.GetComponent<PlayerBoard>().UpdateStatus();
-    //    }
-    //}
-
     private IEnumerator StartTime()
     {
         while (true)
