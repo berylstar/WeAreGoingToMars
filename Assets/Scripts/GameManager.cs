@@ -22,8 +22,7 @@ public class GameManager : MonoBehaviour
 
     [Header("ScoreBoard")]
     [SerializeField] private Button buttonScoreBoard;
-    [SerializeField] private GameObject panelScoreBoard;
-    [SerializeField] private Transform playerBoardHolder;
+    public GameObject panelScoreBoard;
     [SerializeField] private GameObject playerBoard;
 
     private void Awake()
@@ -33,40 +32,40 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(StartTime());
-        GameObject obj = PhotonNetwork.Instantiate("PlayerBoard", Vector3.zero, Quaternion.identity);
-        obj.transform.SetParent(playerBoardHolder);
+        PhotonNetwork.Instantiate("PlayerBoard", Vector3.zero, Quaternion.identity);
+
+        StartCoroutine(StartTime());
     }
 
-    private void Update()
-    {
-        ShowPlayersStatus();
-    }
-
-    private void ShowPlayersStatus()
-    {
-        foreach (Transform child in panelScoreBoard.transform.GetChild(0))
-        {
-            print(child.name);
-        }
-    }
-
-    //private IEnumerator StartTime()
+    //private void Update()
     //{
-    //    while (true)
+    //    ShowPlayersStatus();
+    //}
+
+    //private void ShowPlayersStatus()
+    //{
+    //    foreach (Transform child in panelScoreBoard.transform)
     //    {
-    //        mm += 1;
-
-    //        if (mm == 60)
-    //        {
-    //            hh += 1;
-    //            mm = 0;
-    //        }
-
-    //        textClock.text = $"{hh:D2} : {mm:D2}";
-    //        yield return oneSecond;
+    //        child.GetComponent<PlayerBoard>().UpdateStatus();
     //    }
     //}
+
+    private IEnumerator StartTime()
+    {
+        while (true)
+        {
+            mm += 1;
+
+            if (mm == 60)
+            {
+                hh += 1;
+                mm = 0;
+            }
+
+            textClock.text = $"{hh:D2} : {mm:D2}";
+            yield return oneSecond;
+        }
+    }
 
     public void ToggleScoreBoard()
     {
