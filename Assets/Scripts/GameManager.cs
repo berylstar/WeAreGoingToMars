@@ -6,15 +6,15 @@ using TMPro;
 
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance { get; private set; }
 
     [Header("Clock")]
-    [SerializeField] private TextMeshProUGUI textClock;
-    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
-    private int hh = 0;
-    private int mm = 0;
+    public TextMeshProUGUI textClock;
+    private readonly string clock = "Clock";
 
     [Header("Wallet")]
     [SerializeField] private TextMeshProUGUI textWallet;
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [Header("ScoreBoard")]
     [SerializeField] private Button buttonScoreBoard;
     public GameObject panelScoreBoard;
-    [SerializeField] private GameObject playerBoard;
+    private readonly string playerBoard = "PlayerBoard";
 
     private void Awake()
     {
@@ -32,25 +32,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PhotonNetwork.Instantiate("PlayerBoard", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate(playerBoard, Vector3.zero, Quaternion.identity);
 
-        StartCoroutine(StartTime());
-    }
-
-    private IEnumerator StartTime()
-    {
-        while (true)
+        if (photonView.AmOwner)
         {
-            mm += 1;
-
-            if (mm == 60)
-            {
-                hh += 1;
-                mm = 0;
-            }
-
-            textClock.text = $"{hh:D2} : {mm:D2}";
-            yield return oneSecond;
+            PhotonNetwork.Instantiate(clock, Vector3.zero, Quaternion.identity);
         }
     }
 
