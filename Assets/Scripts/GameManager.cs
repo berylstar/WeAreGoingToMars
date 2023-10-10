@@ -44,4 +44,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         panelScoreBoard.SetActive(!panelScoreBoard.activeInHierarchy);
     }
+
+    private PlayerBoard FindMyBoard()
+    {
+        foreach (Transform tf in panelScoreBoard.transform)
+        {
+            if (tf.gameObject.GetPhotonView().IsMine)
+                return tf.gameObject.GetComponent<PlayerBoard>();
+        }
+        return null;
+    }
+
+    public void GetStock(int index)
+    {
+        FindMyBoard().stocks[index] += 1;
+    }
 }
