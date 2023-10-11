@@ -32,7 +32,7 @@ public class Stock : MonoBehaviour
     public int nextChange;
     public bool isDelisting;
 
-    private List<int> costGraph;
+    private readonly List<int> costGraph = new List<int>();
 
     private void Start()
     {
@@ -45,7 +45,7 @@ public class Stock : MonoBehaviour
 
     private void SetStock()
     {
-        costGraph = new List<int>();
+        costGraph.Add(0);
 
         for (int i = 0; i < 10; i++)
         {
@@ -86,7 +86,7 @@ public class Stock : MonoBehaviour
         }
         else
         {
-            return "(------)";
+            return "(----)";
         }
     }
 }

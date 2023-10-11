@@ -27,7 +27,7 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 
             if (mm == 30 || mm == 60)
             {
-                photonView.RPC("Change", RpcTarget.All);
+                photonView.RPC(nameof(NextRound), RpcTarget.All);
             }
 
             if (mm == 60)
@@ -57,7 +57,7 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    private void Change()
+    private void NextRound()
     {
         GameManager.Instance.ChangeRound();
     }

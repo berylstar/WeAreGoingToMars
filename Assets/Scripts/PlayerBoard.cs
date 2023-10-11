@@ -13,7 +13,9 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private List<TextMeshProUGUI> textWallets;
 
     public int money;
-    public List<int> stockHoldings;
+    public readonly List<int> stockHoldings = new List<int>() { 0, 0, 0, 0, 0 };
+
+    private readonly int startMoney = 2000;
 
     private void Start()
     {
@@ -21,15 +23,11 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
         gameObject.transform.localScale = Vector3.one;
 
         textName.text = gameObject.GetPhotonView().Owner.NickName;
-    }
 
-    private void Update()
-    {
-        textMoney.text = money.ToString();
-
+        money = startMoney;
         for (int i = 0; i < 5; i++)
         {
-            textWallets[i].text = stockHoldings[i].ToString();
+            stockHoldings[i] = 0;
         }
     }
 
@@ -52,6 +50,18 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
             {
                 stockHoldings[i] = (int)stream.ReceiveNext();
             }
+        }
+
+        ShowPlayerStatus();
+    }
+
+    private void ShowPlayerStatus()
+    {
+        textMoney.text = money.ToString();
+
+        for (int i = 0; i < 5; i++)
+        {
+            textWallets[i].text = stockHoldings[i].ToString();
         }
     }
 
