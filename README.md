@@ -17,8 +17,11 @@
 - **게임명** : `WeAreGoingToMars`
 - **설명** : Photon 멀티 주식 게임
 - **개요** : 주식으로 화성 가즈아 ! (※ <더 지니어스 : 블랙 가넷> 중 '폭풍의 증권시장'을 모티브로 제작했습니다.)
-- **조작법:**
-    - 마우스 클릭
+- **게임 방법**
+    - 장이 열리는 09:00부터 시작해 장이 마감되는 15:30까지 다섯 개의 주식의 변동을 예측해 매수하고 매도해, 최고의 수익을 거두는 게임입니다.
+    - 주식은 각각의 다양한 타입을 가지고 있으며 그 타입을 바탕으로 무작위로 주식이 변동합니다.
+    - **즉 모든 주식은 미리 변동사항이 정해져 있으며, 그 정보는 MARS MAGAZINE이 단독 입수 했다는 소식입니다 !**
+    - MARS MAGAZINE은 변화하는 주식의 정보를 기사로 제공할 것 입니다. 이를 기반으로 주식 시장의 판도를 예측하세요.
 - **개발 환경** : Unity 2022.3.2f1
 - **타겟 플랫폼** : PC
 - **개발 기간** `2023.10.06 ~`
@@ -41,6 +44,15 @@
 
 ## **GameScene**
 - 방장 플레이어가 모든 플레이어들이 게임 씬으로 넘어오고 상태를 확인한 후, 게임을 시작합니다.
+- 게임이 시작되면 플레이어들은 2000원의 자산을 받으며, 다섯 개의 주식을 자유롭게 매수하거나 매도할 수 있습니다.
+- 상단 좌측의 버튼으로 스코어 보드를 열 수 있으며, 플레이어들의 자산, 주식 보유량을 확인 할 수 있습니다.
+- 본인의 자산이 주식을 살 수 있는 정도라면 비용을 지불하고 해당 주식의 매수 버튼을 클릭해 매수할 수 있습니다.
+- 소지한 주식을 매도하고 싶을 때는 해당 주식의 매도 버튼을 클릭해 매도할 수 있으며 매도한 주식의 가격만큼 자산을 추가합니다.
+
+## **추후 구현 예정**
+- BGM과 효과음
+- 각각의 주식 타입에 따른 변화 값 세팅
+- 주식의 총 갯수 제한. (플레이어가 전략적으로 구매할 수 있도록)
 
 ---
 <br>
@@ -82,8 +94,8 @@
 | PlayerBoard FindMyBoard() | 자신의 플레이어 보드를 찾아서 반환 |
 | void ShowMyStatus() | 플레이어 정보(자본, 주식 보유량)를 표시 |
 | void NextRound() | 모든 주식을 다음 라운드 값으로 변동 |
-| void OnButStockButton(int index) | 각각의 주식의 구매 버튼에 할당된 메소드. |
-| void OnSellStockButton(int index) | 각각의 주식의 판매 버튼에 할당된 메소드. |
+| void OnButStockButton(int index) | 각각의 주식의 매수 버튼에 할당된 메소드. |
+| void OnSellStockButton(int index) | 각각의 주식의 매도 버튼에 할당된 메소드. |
 
 ### - **[PlayerBoard](Assets/Scripts/PlayerBoard.cs)**
 
@@ -91,8 +103,8 @@
 | -- | -- |
 | void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) | IPunObservable을 사용해 자산과 주식 보유량을 송신/수신 |
 | void ShowPlayerStatus() | 스코어 보드에 자신의 정보를 표시 |
-| void TryBuyStock(Stock stock) | 해당 주식을 구매할 수 있다면 구매 |
-| void TrySellStock(Stock stock) | 해당 주식을 판매할 수 있다면 판매 |
+| void TryBuyStock(Stock stock) | 해당 주식을 구매할 수 있다면 매수 |
+| void TrySellStock(Stock stock) | 해당 주식을 판매할 수 있다면 매도 |
 
 ### - **[Clock](Assets/Scripts/Clock.cs)**
 
@@ -123,3 +135,6 @@
 # 5. 사용 에셋
 - 주식 이미지 : <더 지니어스 : 블랙 가넷> E06 장면 중 캡처
 - 버튼 이미지 : 직접 제작
+- 신문 이미지 : 직접 제작
+- 시계 폰트 : LABDigital
+- 그 외 폰트 : DungGeunMo
