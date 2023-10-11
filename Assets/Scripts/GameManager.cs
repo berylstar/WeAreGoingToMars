@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Stock")]
     public List<Stock> stocks;
 
+    private PlayerBoard myPlayer;
+
     private void Awake()
     {
         Instance = this;
@@ -68,6 +70,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             stock.SetStockInAdvance();
         }
+
+        myPlayer = FindMyBoard();
     }
 
     private bool AllHasTag(string key)
@@ -104,16 +108,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void ShowMyStatus()
     {
-        PlayerBoard player = FindMyBoard();
-
-        //if (player == null)
-        //    return;
-
-        textWallet.text = $"{player.money} $";
+        textWallet.text = $"{myPlayer.money} $";
 
         for (int i = 0; i < 5; i++)
         {
-            textStockHoldings[i].text = player.stockHoldings[i].ToString();
+            textStockHoldings[i].text = myPlayer.stockHoldings[i].ToString();
         }
     }
 
@@ -127,13 +126,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void OnBuyStockButton(int index)
     {
-        FindMyBoard().TryBuyStock(stocks[index]);
+        myPlayer.TryBuyStock(stocks[index]);
         ShowMyStatus();
     }
 
     public void OnSellStockButton(int index)
     {
-        FindMyBoard().TrySellStock(stocks[index]);
+        myPlayer.TrySellStock(stocks[index]);
         ShowMyStatus();
     }
 

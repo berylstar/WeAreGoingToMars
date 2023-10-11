@@ -12,7 +12,6 @@ public enum StockType
     WAVE,       // 크게 변동
     HEAVY,      // 적게 변동
     INCREASE,   // 점점 상승
-    DECREASE,   // 점점 감소
     BIGUP,      // 큰폭 상승
     BIGDOWN,    // 큰폭 감소
 }

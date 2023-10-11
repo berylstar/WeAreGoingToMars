@@ -4,10 +4,9 @@
 
 1. 게임 개요 및 개발 기간
 2. 구현 기능
-3. 기능 명세서
-4. 기획 설계
-5. 클래스 설명
-6. 사용 에셋
+3. 기획 설계
+4. 기능 명세서
+5. 사용 에셋
 
 ---
 <br>
@@ -40,21 +39,14 @@
 - 방에서는 레디 버튼을 통해 준비 상태로 진입하며, 플레이어가 혼자뿐이거나 모두 준비상태가 아니라면 게임 시작 버튼이 비활성화됩니다.
 - 활성화된 게임 시작 버튼을 클릭하여 게임 씬으로 넘어갑니다.
 
----
-<br>
-<br>
-
-# 3. 기능 명세서
-
-진행도 | 기능명 | 기능 소개 | 
---|--|--|
-★★★ | 플레이어 | 게임 내를 돌아다니며 자원을 채취하고 포탑을 건설하는 주체
+## **GameScene**
+- 방장 플레이어가 모든 플레이어들이 게임 씬으로 넘어오고 상태를 확인한 후, 게임을 시작합니다.
 
 ---
 <br>
 <br>
 
-# 4. 기획 설계
+# 3. 기획 설계
 
 - **주식 타입**
     | 타입 이름 | 기능 |
@@ -70,20 +62,64 @@
 <br>
 <br>
 
-# 5. 클래스 설명
-    
-| 클래스 | 기능 |
+# 4. 기능 명세서
+
+### - **[LobbyPanelMain](Assets\Photon\PhotonUnityNetworking\Demos\DemoAsteroids\Scripts\Lobby\LobbyMainPanel.cs)**
+
+| 메소드 | 내용 |
 | -- | -- |
-|[LobbyPanelMain](Assets\Photon\PhotonUnityNetworking\Demos\DemoAsteroids\Scripts\Lobby\LobbyMainPanel.cs)|Photon을 사용해 플레이어 접속과 방 생성에 대한 스크립트|
-|[GameManager](Assets/Scripts/GameManager.cs)||
-|[PlayerBoard](Assets/Scripts/PlayerBoard.cs)||
-|[Clock](Assets/Scripts/Clock.cs)||
-|[Stock](Assets/Scripts/Stock.cs)||
+| -- | 기본적으로 포톤 에셋에 포함된 LobbyScenePanel.cs에서 필요한 부분만 수정하여 사용 |
+
+
+### - **[GameManager](Assets/Scripts/GameManager.cs)**
+
+| 메소드 | 내용 |
+| -- | -- |
+| bool AllHasTag(string key) | 모든 플레이어의 커스텀 프로퍼티 값을 확인 |
+| IEnumerator CoLoading() | AllHasTag 메소드로 플레이어들의 상태를 확인한 후, 시계, 주식을 세팅
+| void RPCOnGame() | RPC 메소드로 로딩 판넬을 비활성화
+| void ToggleScoreBoard() | 플레이어 스코어 보드를 활성화/비활성화. ButtonScoreBoard에 할당
+| PlayerBoard FindMyBoard() | 자신의 플레이어 보드를 찾아서 반환 |
+| void ShowMyStatus() | 플레이어 정보(자본, 주식 보유량)를 표시 |
+| void NextRound() | 모든 주식을 다음 라운드 값으로 변동 |
+| void OnButStockButton(int index) | 각각의 주식의 구매 버튼에 할당된 메소드. |
+| void OnSellStockButton(int index) | 각각의 주식의 판매 버튼에 할당된 메소드. |
+
+### - **[PlayerBoard](Assets/Scripts/PlayerBoard.cs)**
+
+| 메소드 | 내용 |
+| -- | -- |
+| void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) | IPunObservable을 사용해 자산과 주식 보유량을 송신/수신 |
+| void ShowPlayerStatus() | 스코어 보드에 자신의 정보를 표시 |
+| void TryBuyStock(Stock stock) | 해당 주식을 구매할 수 있다면 구매 |
+| void TrySellStock(Stock stock) | 해당 주식을 판매할 수 있다면 판매 |
+
+### - **[Clock](Assets/Scripts/Clock.cs)**
+
+| 메소드 | 내용 |
+| -- | -- |
+| IEnumerator CoStartTime() | 게임 오버 전까지 시간이 흐르도록 하는 코루틴. switch 문을 이용해 시간마다 벌어져야 하는 메소드 실행 |
+| void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) | IPunObservable을 사용해 시간 데이터를 송신/수신 |
+| void RPCNextRound() | 게임 매니저의 NextRound를 RPC로 전체 실행하도록 하는 메소드 |
+| void RPCTimeImminent() | CoClockBlink를 RPC로 전체 실행하도록 하는 메소드 |
+| IEnumerator CoClockBlink() | 시간이 임박했을 때 시계가 깜빡이는 효과를 위한 메소드
+
+### - **[Stock](Assets/Scripts/Stock.cs)**
+
+| 메소드 | 내용 |
+| -- | -- |
+| void InitialStock() | 주식 초기 상태 설정 |
+| void SetStockInAdvance() | 게임 매니저의 CoLoading을 통해 실행되는 메소드, 모든 주식의 변동 값을 주식 타입을 바탕으로 무작위 설정.
+| void RPCSetStockGraph(int index, int value) | SetStockInAdvance 메소드에서 주식 값을 하나씩 설정할 때마다 모든 플레이어들에게 동일 한 값으로 설정하도록 하는 메소드 |
+| void ShowStockStatus() | 주식 판에서 주식의 정보 표시 |
+| string ShowCostChange() | 주식의 변동 정보 표시 |
+| void ChangeStockCost() | 게임 매니저의 NextRound를 통해 실행되는 메소드, 다음 라운드의 주식 값으로 변동시키고 상장폐지를 체크.
+| void Deslisting() | 주식의 상장폐지를 확인하고, 상장 폐지와 관련된 메소드 실행 |
 
 ---
 <br>
 <br>
 
-# 6. 사용 에셋
+# 5. 사용 에셋
 - 주식 이미지 : <더 지니어스 : 블랙 가넷> E06 장면 중 캡처
 - 버튼 이미지 : 직접 제작
