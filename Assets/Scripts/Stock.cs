@@ -47,7 +47,7 @@ public class Stock : MonoBehaviour
         costGraph.Add(0);
         for (int i = 0; i < 13; i++)
         {
-            costGraph.Add((i + 1) * 100);
+            costGraph.Add(Random.Range(-2, 2) * 100);
         }
     }
 
@@ -63,7 +63,7 @@ public class Stock : MonoBehaviour
 
         if (isDelisting)
         {
-            return "(»óÀåÆóÁö)";
+            return "(¡Ø»óÀåÆóÁö)";
         }
         else if (changes > 0)
         {
@@ -84,6 +84,23 @@ public class Stock : MonoBehaviour
         roundIndex += 1;
 
         costNow += costGraph[roundIndex];
+
+        CheckDelisting();
+
         ShowStockStatus();
+    }
+
+    private void CheckDelisting()
+    {
+        if (costNow <= 0)
+        {
+
+        }
+    }
+
+    [PunRPC]
+    private void RPCSetStockGraph()
+    {
+
     }
 }

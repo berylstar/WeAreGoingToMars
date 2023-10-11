@@ -67,7 +67,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
     public void TryBuyStock(Stock stock)
     {
-        if (money >= stock.costNow)
+        if (money >= stock.costNow && !stock.isDelisting)
         {
             money -= stock.costNow;
             stockHoldings[stock.serialNumber] += 1;

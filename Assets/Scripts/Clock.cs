@@ -31,20 +31,27 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
         {
             mm += 1;
 
-            if (mm == 20 || mm == 50)
+            switch (mm)
             {
-                photonView.RPC(nameof(TimeImminent), RpcTarget.All);
+                case 20:
+                case 50:
+                    photonView.RPC(nameof(RPCTimeImminent), RpcTarget.All);
+                    break;
+
+                case 30:
+                    photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
+                    break;
+
+                case 60:
+                    hh += 1;
+                    mm = 0;
+                    photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
+                    break;
             }
 
-            if (mm == 30 || mm == 60)
+            if (hh == 15 && mm == 30)
             {
-                photonView.RPC(nameof(NextRound), RpcTarget.All);
-            }
-
-            if (mm == 60)
-            {
-                hh += 1;
-                mm = 0;
+                // 게임 종료
             }
 
             yield return delay_1s;
@@ -69,20 +76,20 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    private void NextRound()
+    private void RPCNextRound()
     {
-        GameManager.Instance.ChangeRound();
+        GameManager.Instance.NextRound();
     }
 
     [PunRPC]
-    private void TimeImminent()
+    private void RPCTimeImminent()
     {
         StartCoroutine(CoClockBlink());
     }
 
     private IEnumerator CoClockBlink()
     {
-        while ((20 <= mm && mm < 30) || (50 <= mm && mm < 60))
+        while ((15 <= mm && mm < 30) || (45 <= mm && mm < 60))
         {
             textClock.color = Color.black;
             yield return delay_05s;

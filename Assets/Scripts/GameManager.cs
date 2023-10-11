@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void ChangeRound()
+    public void NextRound()
     {
         foreach (Stock stock in stocks)
         {
