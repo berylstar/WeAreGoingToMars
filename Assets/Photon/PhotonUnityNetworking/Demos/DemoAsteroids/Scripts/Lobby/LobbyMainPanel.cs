@@ -283,6 +283,9 @@ namespace Photon.Pun.Demo.Asteroids
                 return false;
             }
 
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+                return false;
+
             foreach (Player p in PhotonNetwork.PlayerList)
             {
                 if (p.CustomProperties.TryGetValue(AsteroidsGame.PLAYER_READY, out object isPlayerReady))
