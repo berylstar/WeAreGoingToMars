@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text;
 
 using Photon.Pun;
 
@@ -31,6 +32,8 @@ public class Stock : MonoBehaviourPunCallbacks
 
     [SerializeField] private List<int> costGraph = new List<int>(); // 추후 SerializeField 없애고 readonly
     private int roundIndex;
+
+    private readonly string symbols = "!@#$%^&*+=※☆★○●◎→←↑↓↔♠♤♡♥♧♣♬♪♩♭‡†¶☞☜☎☏♨";
 
     private void Start()
     {
@@ -111,6 +114,39 @@ public class Stock : MonoBehaviourPunCallbacks
             isDelisting = true;
             costNow = 0;
             GameManager.Instance.ApplyDelistedStock(this);
+        }
+    }
+
+    public string ReturnNews()
+    {
+        StringBuilder name = new StringBuilder();
+
+        for (int i = 0; i < 4; i++)
+        {
+            name.Append(symbols[Random.Range(0, symbols.Length)]);
+        }
+
+        if (costGraph[roundIndex] > 0)
+        {
+            if (costGraph[roundIndex + 1] > 0)
+            {
+                return $"[특징주] {name},\n\n세계로 나아가는 'K-기업'\n주가 또 다시 상승 예측";
+            }
+            else
+            {
+                return $"[특징주] {name},\n\n갑작스러운 경기 침체에 주춤\n상승했던 주가 재차 하락";
+            }
+        }
+        else
+        {
+            if (costGraph[roundIndex + 1] > 0)
+            {
+                return $"[특징주] {name},\n\n드디어 반등 기회 잡나..\n하락했던 주가 이번엔 상승 예측";
+            }
+            else
+            {
+                return $"[특징주] {name},\n\n경기 침체 극복 실패...\n주가 또 다시 하락 예측";
+            }
         }
     }
 }

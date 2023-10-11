@@ -122,6 +122,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             stock.ChangeStockCost();
         }
+
+        ShowNews();
     }
 
     public void OnBuyStockButton(int index)
@@ -140,5 +142,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         MyPlayer.stockHoldings[stock.serialNumber] = 0;
         ShowMyStatus();
+    }
+
+    private void ShowNews()
+    {
+        textNews.text = stocks[Random.Range(0, stocks.Count)].ReturnNews();
     }
 }

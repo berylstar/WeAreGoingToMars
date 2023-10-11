@@ -48,7 +48,7 @@
 - 상단 좌측의 버튼으로 스코어 보드를 열 수 있으며, 플레이어들의 자산, 주식 보유량을 확인 할 수 있습니다.
 - 본인의 자산이 주식을 살 수 있는 정도라면 비용을 지불하고 해당 주식의 매수 버튼을 클릭해 매수할 수 있습니다.
 - 소지한 주식을 매도하고 싶을 때는 해당 주식의 매도 버튼을 클릭해 매도할 수 있으며 매도한 주식의 가격만큼 자산을 추가합니다.
-- 만약 소지한 주식이 0원이 된다면, 즉시 상장폐지되며 소지한 해당 주식은 모두 휴지조각이 됩니다.
+- 만약 소지한 주식이 0원이 된다면, 즉시 상장폐지되며 소지한 해당 주식은 모두 사라지고 상장폐지된 주식은 구매가 불가능합니다.
 
 ## **추후 구현 예정**
 - BGM과 효과음
@@ -99,6 +99,7 @@
 | void OnButStockButton(int index) | 각각의 주식의 매수 버튼에 할당된 메소드. |
 | void OnSellStockButton(int index) | 각각의 주식의 매도 버튼에 할당된 메소드. |
 | void ApplyDelistedStock(Stock stock) | 상장폐지된 주식 적용 |
+| void ShowNews() | 라운드 별 무작위 주식의 정보를 익명으로 공개 |
 
 ### - **[PlayerBoard](Assets/Scripts/PlayerBoard.cs)**
 
@@ -130,6 +131,7 @@
 | string ShowCostChange() | 주식의 변동 정보 표시 |
 | void ChangeStockCost() | 게임 매니저의 NextRound를 통해 실행되는 메소드, 다음 라운드의 주식 값으로 변동시키고 상장폐지를 체크.
 | void Deslisting() | 주식의 상장폐지 적용 |
+| string ReturnNews() | 해당 주식의 정보를 게임매니저로 리턴 |
 
 ---
 <br>

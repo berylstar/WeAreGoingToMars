@@ -8568,16 +8568,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Welcome To Stock Game !
-
-    Welcome To Stock Game !
-
-    Welcome To Stock
-    Game !
-
-    Welcome To Stock Game !
-
-    Welcome To Stock Game !'
+  m_text: Welcome To Stock Game !
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 19f4ffca309905a4ea182d96a2e8e5df, type: 2}
   m_sharedMaterial: {fileID: 3009678117575462755, guid: 19f4ffca309905a4ea182d96a2e8e5df, type: 2}
