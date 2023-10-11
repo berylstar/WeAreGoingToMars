@@ -7,13 +7,15 @@ using Photon.Pun;
 
 public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private TextMeshProUGUI textClock;
-
-    private int hh = 0;
-    private int mm = 0;
-
     private readonly WaitForSeconds delay_1s = new WaitForSeconds(1f);
     private readonly WaitForSeconds delay_05s = new WaitForSeconds(0.5f);
+
+    private int hh = 9;
+    private int mm = 0;
+
+    private TextMeshProUGUI textClock;
+
+    private bool isGameOver = false;
 
     private void Start()
     {
@@ -21,13 +23,13 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.AmOwner)
         {
-            StartCoroutine(StartTime());
+            StartCoroutine(CoStartTime());
         }
     }
 
-    private IEnumerator StartTime()
+    private IEnumerator CoStartTime()
     {
-        while (true)
+        while (!isGameOver)
         {
             mm += 1;
 
@@ -51,7 +53,7 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 
             if (hh == 15 && mm == 30)
             {
-                // 게임 종료
+                isGameOver = true;
             }
 
             yield return delay_1s;

@@ -17,7 +17,7 @@ public enum StockType
     BIGDOWN,    // Å«Æø °¨¼Ò
 }
 
-public class Stock : MonoBehaviour
+public class Stock : MonoBehaviourPunCallbacks
 {
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textCost;
@@ -44,11 +44,26 @@ public class Stock : MonoBehaviour
         roundIndex = 0;
         isDelisting = false;
 
-        costGraph.Add(0);
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < 15; i++)
         {
-            costGraph.Add(Random.Range(-2, 2) * 100);
+            costGraph.Add(0);
         }
+    }
+
+    public void SetStockInAdvance()
+    {
+        for (int i = 1; i < 14; i++)
+        {
+            costGraph[i] = Random.Range(-2, 2) * 100;
+
+            photonView.RPC(nameof(RPCSetStockGraph), RpcTarget.All, i, costGraph[i]);
+        }        
+    }
+
+    [PunRPC]
+    private void RPCSetStockGraph(int index, int value)
+    {
+        costGraph[index] = value;
     }
 
     private void ShowStockStatus()
@@ -96,11 +111,5 @@ public class Stock : MonoBehaviour
         {
 
         }
-    }
-
-    [PunRPC]
-    private void RPCSetStockGraph()
-    {
-
     }
 }

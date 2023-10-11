@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 using Photon.Pun;
+using Photon.Realtime;
 
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -28,6 +29,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject panelScoreBoard;
     private readonly string playerBoard = "PlayerBoard";
 
+    [Header("PanelLoading")]
+    [SerializeField] private GameObject panelLoading;
+    private readonly string loadingProperty = "LOAD_SCENE";
+
     [Header("Stock")]
     public List<Stock> stocks;
 
@@ -40,10 +45,46 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.Instantiate(playerBoard, Vector3.zero, Quaternion.identity);
 
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { loadingProperty, true } });
+
         if (photonView.AmOwner)
         {
-            PhotonNetwork.Instantiate(clock, Vector3.zero, Quaternion.identity);
+            StartCoroutine(CoLoading());
         }
+    }
+
+    private IEnumerator CoLoading()
+    {
+        while (!AllHasTag(loadingProperty))
+        {
+            yield return null;
+        }
+
+        photonView.RPC(nameof(RPCOnGame), RpcTarget.All);
+
+        PhotonNetwork.Instantiate(clock, Vector3.zero, Quaternion.identity);
+
+        foreach (Stock stock in stocks)
+        {
+            stock.SetStockInAdvance();
+        }
+    }
+
+    private bool AllHasTag(string key)
+    {
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            if (p.CustomProperties[key] == null)
+                return false;
+        }
+
+        return true;
+    }
+
+    [PunRPC]
+    private void RPCOnGame()
+    {
+        panelLoading.SetActive(false);
     }
 
     public void ToggleScoreBoard()
@@ -65,8 +106,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         PlayerBoard player = FindMyBoard();
 
-        if (player == null)
-            return;
+        //if (player == null)
+        //    return;
 
         textWallet.text = $"{player.money} $";
 
@@ -94,5 +135,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         FindMyBoard().TrySellStock(stocks[index]);
         ShowMyStatus();
+    }
+
+    public void TEST()
+    {
+        PhotonNetwork.Disconnect();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LobbyScene");
     }
 }
