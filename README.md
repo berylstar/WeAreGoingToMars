@@ -21,7 +21,7 @@
     - 장이 열리는 09:00부터 시작해 장이 마감되는 15:30까지 다섯 개의 주식의 변동을 예측해 매수하고 매도해, 최고의 수익을 거두는 게임입니다.
     - 주식은 각각의 다양한 타입을 가지고 있으며 그 타입을 바탕으로 무작위로 주식이 변동합니다.
     - **즉 모든 주식은 미리 변동사항이 정해져 있으며, 그 정보는 MARS MAGAZINE이 단독 입수 했다는 소식입니다 !**
-    - MARS MAGAZINE은 변화하는 주식의 정보를 기사로 제공할 것 입니다. 이를 기반으로 주식 시장의 판도를 예측하세요.
+    - MARS MAGAZINE은 변화하는 주식의 정보를 기사로 제공할 것 입니다. 이를 기반으로 다른 플레이어와 정보를 공유하고 주식 시장의 판도를 예측하세요.
 - **개발 환경** : Unity 2022.3.2f1
 - **타겟 플랫폼** : PC
 - **개발 기간** `2023.10.06 ~`
@@ -48,11 +48,13 @@
 - 상단 좌측의 버튼으로 스코어 보드를 열 수 있으며, 플레이어들의 자산, 주식 보유량을 확인 할 수 있습니다.
 - 본인의 자산이 주식을 살 수 있는 정도라면 비용을 지불하고 해당 주식의 매수 버튼을 클릭해 매수할 수 있습니다.
 - 소지한 주식을 매도하고 싶을 때는 해당 주식의 매도 버튼을 클릭해 매도할 수 있으며 매도한 주식의 가격만큼 자산을 추가합니다.
+- 만약 소지한 주식이 0원이 된다면, 즉시 상장폐지되며 소지한 해당 주식은 모두 휴지조각이 됩니다.
 
 ## **추후 구현 예정**
 - BGM과 효과음
 - 각각의 주식 타입에 따른 변화 값 세팅
 - 주식의 총 갯수 제한. (플레이어가 전략적으로 구매할 수 있도록)
+- 플레이어 파산 안내
 
 ---
 <br>
@@ -89,13 +91,14 @@
 | -- | -- |
 | bool AllHasTag(string key) | 모든 플레이어의 커스텀 프로퍼티 값을 확인 |
 | IEnumerator CoLoading() | AllHasTag 메소드로 플레이어들의 상태를 확인한 후, 시계, 주식을 세팅
-| void RPCOnGame() | RPC 메소드로 로딩 판넬을 비활성화
+| void RPCOnGame() | RPC 메소드로 로딩 판넬을 비활성화, FindMyBoard로 플레이어 할당
 | void ToggleScoreBoard() | 플레이어 스코어 보드를 활성화/비활성화. ButtonScoreBoard에 할당
 | PlayerBoard FindMyBoard() | 자신의 플레이어 보드를 찾아서 반환 |
 | void ShowMyStatus() | 플레이어 정보(자본, 주식 보유량)를 표시 |
 | void NextRound() | 모든 주식을 다음 라운드 값으로 변동 |
 | void OnButStockButton(int index) | 각각의 주식의 매수 버튼에 할당된 메소드. |
 | void OnSellStockButton(int index) | 각각의 주식의 매도 버튼에 할당된 메소드. |
+| void ApplyDelistedStock(Stock stock) | 상장폐지된 주식 적용 |
 
 ### - **[PlayerBoard](Assets/Scripts/PlayerBoard.cs)**
 
@@ -126,7 +129,7 @@
 | void ShowStockStatus() | 주식 판에서 주식의 정보 표시 |
 | string ShowCostChange() | 주식의 변동 정보 표시 |
 | void ChangeStockCost() | 게임 매니저의 NextRound를 통해 실행되는 메소드, 다음 라운드의 주식 값으로 변동시키고 상장폐지를 체크.
-| void Deslisting() | 주식의 상장폐지를 확인하고, 상장 폐지와 관련된 메소드 실행 |
+| void Deslisting() | 주식의 상장폐지 적용 |
 
 ---
 <br>

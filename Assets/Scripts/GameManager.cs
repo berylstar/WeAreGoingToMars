@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [Header("Stock")]
     public List<Stock> stocks;
 
-    private PlayerBoard myPlayer;
+    public PlayerBoard MyPlayer { get; private set; }
 
     private void Awake()
     {
@@ -70,8 +70,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             stock.SetStockInAdvance();
         }
-
-        myPlayer = FindMyBoard();
     }
 
     private bool AllHasTag(string key)
@@ -89,6 +87,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void RPCOnGame()
     {
         panelLoading.SetActive(false);
+
+        MyPlayer = FindMyBoard();
     }
 
     public void ToggleScoreBoard()
@@ -108,11 +108,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void ShowMyStatus()
     {
-        textWallet.text = $"{myPlayer.money} $";
+        textWallet.text = $"{MyPlayer.money} $";
 
         for (int i = 0; i < 5; i++)
         {
-            textStockHoldings[i].text = myPlayer.stockHoldings[i].ToString();
+            textStockHoldings[i].text = MyPlayer.stockHoldings[i].ToString();
         }
     }
 
@@ -126,19 +126,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void OnBuyStockButton(int index)
     {
-        myPlayer.TryBuyStock(stocks[index]);
+        MyPlayer.TryBuyStock(stocks[index]);
         ShowMyStatus();
     }
 
     public void OnSellStockButton(int index)
     {
-        myPlayer.TrySellStock(stocks[index]);
+        MyPlayer.TrySellStock(stocks[index]);
         ShowMyStatus();
     }
 
-    public void TEST()
+    public void ApplyDelistedStock(Stock stock)
     {
-        PhotonNetwork.Disconnect();
-        UnityEngine.SceneManagement.SceneManager.LoadScene("LobbyScene");
+        MyPlayer.stockHoldings[stock.serialNumber] = 0;
+        ShowMyStatus();
     }
 }

@@ -29,7 +29,7 @@ public class Stock : MonoBehaviourPunCallbacks
     public int costNow;
     public bool isDelisting;
 
-    private readonly List<int> costGraph = new List<int>();
+    [SerializeField] private List<int> costGraph = new List<int>(); // 추후 SerializeField 없애고 readonly
     private int roundIndex;
 
     private void Start()
@@ -53,7 +53,7 @@ public class Stock : MonoBehaviourPunCallbacks
     {
         for (int i = 1; i < 14; i++)
         {
-            costGraph[i] = Random.Range(-2, 2) * 100;
+            costGraph[i] = Random.Range(-3, 3) * 100;
 
             photonView.RPC(nameof(RPCSetStockGraph), RpcTarget.All, i, costGraph[i]);
         }        
@@ -77,7 +77,7 @@ public class Stock : MonoBehaviourPunCallbacks
 
         if (isDelisting)
         {
-            return "(※상장폐지)";
+            return "※상장폐지";
         }
         else if (changes > 0)
         {
@@ -108,7 +108,9 @@ public class Stock : MonoBehaviourPunCallbacks
     {
         if (costNow <= 0)
         {
-
+            isDelisting = true;
+            costNow = 0;
+            GameManager.Instance.ApplyDelistedStock(this);
         }
     }
 }
