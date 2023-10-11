@@ -16,9 +16,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI textClock;
     private readonly string clock = "Clock";
 
+    [Header("News")]
+    [SerializeField] private TextMeshProUGUI textNews;
+
     [Header("Wallet")]
     [SerializeField] private TextMeshProUGUI textWallet;
-    [SerializeField] private List<TextMeshProUGUI> textStackHoldings;
+    [SerializeField] private List<TextMeshProUGUI> textStockHoldings;
 
     [Header("ScoreBoard")]
     [SerializeField] private Button buttonScoreBoard;
@@ -53,20 +56,23 @@ public class GameManager : MonoBehaviourPunCallbacks
         foreach (Transform tf in panelScoreBoard.transform)
         {
             if (tf.gameObject.GetPhotonView().IsMine)
-                return tf.gameObject.GetComponent<PlayerBoard>();
+                return tf.GetComponent<PlayerBoard>();
         }
         return null;
     }
 
-    public void ShowMyStatus()
+    private void ShowMyStatus()
     {
         PlayerBoard player = FindMyBoard();
+
+        if (player == null)
+            return;
 
         textWallet.text = $"{player.money} $";
 
         for (int i = 0; i < 5; i++)
         {
-            textStackHoldings[i].text = player.stockHoldings[i].ToString();
+            textStockHoldings[i].text = player.stockHoldings[i].ToString();
         }
     }
 

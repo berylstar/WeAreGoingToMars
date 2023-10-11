@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 using Photon.Pun;
 
 public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 {
+    private TextMeshProUGUI textClock;
+
     private int hh = 0;
     private int mm = 0;
 
-    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
+    private readonly WaitForSeconds delay_1s = new WaitForSeconds(1f);
+    private readonly WaitForSeconds delay_05s = new WaitForSeconds(0.5f);
 
     private void Start()
     {
+        textClock = GameManager.Instance.textClock;
+
         if (photonView.AmOwner)
         {
             StartCoroutine(StartTime());
@@ -25,6 +31,11 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
         {
             mm += 1;
 
+            if (mm == 20 || mm == 50)
+            {
+                photonView.RPC(nameof(TimeImminent), RpcTarget.All);
+            }
+
             if (mm == 30 || mm == 60)
             {
                 photonView.RPC(nameof(NextRound), RpcTarget.All);
@@ -36,7 +47,7 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
                 mm = 0;
             }
 
-            yield return oneSecond;
+            yield return delay_1s;
         }
     }
 
@@ -53,12 +64,32 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
             mm = (int)stream.ReceiveNext();
         }
 
-        GameManager.Instance.textClock.text = $"{hh:D2} : {mm:D2}";
+        if (textClock != null)
+            textClock.text = $"{hh:D2} : {mm:D2}";
     }
 
     [PunRPC]
     private void NextRound()
     {
         GameManager.Instance.ChangeRound();
+    }
+
+    [PunRPC]
+    private void TimeImminent()
+    {
+        StartCoroutine(CoClockBlink());
+    }
+
+    private IEnumerator CoClockBlink()
+    {
+        while ((20 <= mm && mm < 30) || (50 <= mm && mm < 60))
+        {
+            textClock.color = Color.black;
+            yield return delay_05s;
+            textClock.color = Color.yellow;
+            yield return delay_05s;
+        }
+
+        textClock.color = Color.yellow;
     }
 }

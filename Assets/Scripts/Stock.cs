@@ -28,31 +28,27 @@ public class Stock : MonoBehaviour
     public int serialNumber;
     public StockType type;
     public int costNow;
-    public int prevChange;
-    public int nextChange;
     public bool isDelisting;
 
     private readonly List<int> costGraph = new List<int>();
+    private int roundIndex;
 
     private void Start()
     {
-        prevChange = 0;
-        isDelisting = false;
-
-        SetStock();
+        InitialStock();
         ShowStockStatus();
     }
 
-    private void SetStock()
+    private void InitialStock()
     {
-        costGraph.Add(0);
+        roundIndex = 0;
+        isDelisting = false;
 
-        for (int i = 0; i < 10; i++)
+        costGraph.Add(0);
+        for (int i = 0; i < 13; i++)
         {
             costGraph.Add((i + 1) * 100);
         }
-
-        nextChange = costGraph[0];
     }
 
     private void ShowStockStatus()
@@ -61,32 +57,33 @@ public class Stock : MonoBehaviour
         textChange.text = ShowCostChange();
     }
 
-    public void ChangeStockCost()
-    {
-        costNow += nextChange;
-        costGraph.RemoveAt(0);
-        nextChange = costGraph[0];
-
-        ShowStockStatus();
-    }
-
     private string ShowCostChange()
     {
+        int changes = costGraph[roundIndex];
+
         if (isDelisting)
         {
             return "(»óÀåÆóÁö)";
         }
-        else if (prevChange > 0)
+        else if (changes > 0)
         {
-            return $"({prevChange}¡ã)";
+            return $"({changes}¡ã)";
         }
-        else if (prevChange < 0)
+        else if (changes < 0)
         {
-            return $"({prevChange}¡å)";
+            return $"({changes}¡å)";
         }
         else
         {
             return "(----)";
         }
+    }
+
+    public void ChangeStockCost()
+    {
+        roundIndex += 1;
+
+        costNow += costGraph[roundIndex];
+        ShowStockStatus();
     }
 }
