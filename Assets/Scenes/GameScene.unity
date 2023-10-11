@@ -891,6 +891,7 @@ MonoBehaviour:
   type: 0
   costNow: 700
   isDelisting: 0
+  costGraph: 
 --- !u!114 &115374256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1132,8 +1133,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 50
@@ -1755,6 +1756,7 @@ MonoBehaviour:
   type: 0
   costNow: 500
   isDelisting: 0
+  costGraph: 
 --- !u!114 &391728673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1862,8 +1864,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 50
@@ -2080,6 +2082,7 @@ MonoBehaviour:
   type: 0
   costNow: 500
   isDelisting: 0
+  costGraph: 
 --- !u!114 &497168103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2762,8 +2765,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 50
@@ -3918,6 +3921,7 @@ MonoBehaviour:
   type: 0
   costNow: 1200
   isDelisting: 0
+  costGraph: 
 --- !u!114 &940672407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4977,7 +4981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1228663648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5012,7 +5016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6482,8 +6486,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 50
@@ -7771,6 +7775,7 @@ MonoBehaviour:
   type: 0
   costNow: 200
   isDelisting: 0
+  costGraph: 
 --- !u!114 &1882015181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7878,8 +7883,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 50
