@@ -12,12 +12,11 @@ public enum StockType
     WAVE,       // 크게 변동
     HEAVY,      // 적게 변동
     INCREASE,   // 점점 상승
-    DECREASE,   // 점점 감소
     BIGUP,      // 큰폭 상승
     BIGDOWN,    // 큰폭 감소
 }
 
-public class Stock : MonoBehaviour
+public class Stock : MonoBehaviourPunCallbacks
 {
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textCost;
@@ -28,24 +27,42 @@ public class Stock : MonoBehaviour
     public int serialNumber;
     public StockType type;
     public int costNow;
-    public int prevChange;
-    public int nextChange;
     public bool isDelisting;
 
-    private List<int> costGraph;
+    private readonly List<int> costGraph = new List<int>();
+    private int roundIndex;
 
     private void Start()
     {
-        prevChange = 0;
-        isDelisting = false;
-
-        SetStock();
+        InitialStock();
         ShowStockStatus();
     }
 
-    private void SetStock()
+    private void InitialStock()
     {
-        costGraph = new List<int>();
+        roundIndex = 0;
+        isDelisting = false;
+
+        for (int i = 0; i < 15; i++)
+        {
+            costGraph.Add(0);
+        }
+    }
+
+    public void SetStockInAdvance()
+    {
+        for (int i = 1; i < 14; i++)
+        {
+            costGraph[i] = Random.Range(-2, 2) * 100;
+
+            photonView.RPC(nameof(RPCSetStockGraph), RpcTarget.All, i, costGraph[i]);
+        }        
+    }
+
+    [PunRPC]
+    private void RPCSetStockGraph(int index, int value)
+    {
+        costGraph[index] = value;
     }
 
     private void ShowStockStatus()
@@ -56,21 +73,42 @@ public class Stock : MonoBehaviour
 
     private string ShowCostChange()
     {
+        int changes = costGraph[roundIndex];
+
         if (isDelisting)
         {
-            return "(상장폐지)";
+            return "(※상장폐지)";
         }
-        else if (prevChange > 0)
+        else if (changes > 0)
         {
-            return $"({prevChange}▲)";
+            return $"({changes}▲)";
         }
-        else if (prevChange < 0)
+        else if (changes < 0)
         {
-            return $"({prevChange}▼)";
+            return $"({changes}▼)";
         }
         else
         {
-            return "(------)";
+            return "(----)";
+        }
+    }
+
+    public void ChangeStockCost()
+    {
+        roundIndex += 1;
+
+        costNow += costGraph[roundIndex];
+
+        CheckDelisting();
+
+        ShowStockStatus();
+    }
+
+    private void CheckDelisting()
+    {
+        if (costNow <= 0)
+        {
+
         }
     }
 }

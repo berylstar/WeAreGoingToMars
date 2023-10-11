@@ -1,37 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 using Photon.Pun;
 
 public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private int hh = 0;
+    private readonly WaitForSeconds delay_1s = new WaitForSeconds(1f);
+    private readonly WaitForSeconds delay_05s = new WaitForSeconds(0.5f);
+
+    private int hh = 9;
     private int mm = 0;
 
-    private readonly WaitForSeconds oneSecond = new WaitForSeconds(1f);
+    private TextMeshProUGUI textClock;
+
+    private bool isGameOver = false;
 
     private void Start()
     {
+        textClock = GameManager.Instance.textClock;
+
         if (photonView.AmOwner)
         {
-            StartCoroutine(StartTime());
+            StartCoroutine(CoStartTime());
         }
     }
 
-    private IEnumerator StartTime()
+    private IEnumerator CoStartTime()
     {
-        while (true)
+        while (!isGameOver)
         {
             mm += 1;
 
-            if (mm == 60)
+            switch (mm)
             {
-                hh += 1;
-                mm = 0;
+                case 20:
+                case 50:
+                    photonView.RPC(nameof(RPCTimeImminent), RpcTarget.All);
+                    break;
+
+                case 30:
+                    photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
+                    break;
+
+                case 60:
+                    hh += 1;
+                    mm = 0;
+                    photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
+                    break;
             }
 
-            yield return oneSecond;
+            if (hh == 15 && mm == 30)
+            {
+                isGameOver = true;
+            }
+
+            yield return delay_1s;
         }
     }
 
@@ -48,6 +73,32 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
             mm = (int)stream.ReceiveNext();
         }
 
-        GameManager.Instance.textClock.text = $"{hh:D2} : {mm:D2}";
+        if (textClock != null)
+            textClock.text = $"{hh:D2} : {mm:D2}";
+    }
+
+    [PunRPC]
+    private void RPCNextRound()
+    {
+        GameManager.Instance.NextRound();
+    }
+
+    [PunRPC]
+    private void RPCTimeImminent()
+    {
+        StartCoroutine(CoClockBlink());
+    }
+
+    private IEnumerator CoClockBlink()
+    {
+        while ((15 <= mm && mm < 30) || (45 <= mm && mm < 60))
+        {
+            textClock.color = Color.black;
+            yield return delay_05s;
+            textClock.color = Color.yellow;
+            yield return delay_05s;
+        }
+
+        textClock.color = Color.yellow;
     }
 }

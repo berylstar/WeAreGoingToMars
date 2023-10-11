@@ -40,6 +40,13 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - UpdateStatus
+  - Change
+  - NextRound
+  - TimeImminent
+  - RPCSetStockGraph
+  - RPCNextRound
+  - RPCTimeImminent
+  - RPCOnGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
