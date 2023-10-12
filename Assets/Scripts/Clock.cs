@@ -33,6 +33,11 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
         {
             mm += 1;
 
+            if (hh == 15 && mm == 30)
+            {
+                break;
+            }
+
             switch (mm)
             {
                 case 20:
@@ -49,11 +54,6 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
                     mm = 0;
                     photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
                     break;
-            }
-
-            if (hh == 15 && mm == 30)
-            {
-                isGameOver = true;
             }
 
             yield return delay_1s;
@@ -81,6 +81,12 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
     private void RPCNextRound()
     {
         GameManager.Instance.NextRound();
+    }
+
+    [PunRPC]
+    private void RPCGameOver()
+    {
+        GameManager.Instance.GameOver();
     }
 
     [PunRPC]
