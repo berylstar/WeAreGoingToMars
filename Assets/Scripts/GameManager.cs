@@ -126,6 +126,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         ShowNews();
     }
 
+    public void GameOver()
+    {
+        textClock.text = "CLOSED";
+    }
+
     public void OnBuyStockButton(int index)
     {
         MyPlayer.TryBuyStock(stocks[index]);

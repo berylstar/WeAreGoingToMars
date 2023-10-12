@@ -101,6 +101,7 @@
 | PlayerBoard FindMyBoard() | 자신의 플레이어 보드를 찾아서 반환 |
 | void ShowMyStatus() | 플레이어 정보(자본, 주식 보유량)를 표시 |
 | void NextRound() | 모든 주식을 다음 라운드 값으로 변동 |
+| void GameOver() | 게임 종료 메소드 |
 | void OnButStockButton(int index) | 각각의 주식의 매수 버튼에 할당된 메소드. |
 | void OnSellStockButton(int index) | 각각의 주식의 매도 버튼에 할당된 메소드. |
 | void ApplyDelistedStock(Stock stock) | 상장폐지된 주식 적용 |
@@ -122,6 +123,7 @@
 | IEnumerator CoStartTime() | 게임 오버 전까지 시간이 흐르도록 하는 코루틴. switch 문을 이용해 시간마다 벌어져야 하는 메소드 실행 |
 | void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) | IPunObservable을 사용해 시간 데이터를 송신/수신 |
 | void RPCNextRound() | 게임 매니저의 NextRound를 RPC로 전체 실행하도록 하는 메소드 |
+| void RPCGameOver() | 게임 매니저의 GameOver를 RPC로 전체 실행하도록 하는 메소드 |
 | void RPCTimeImminent() | CoClockBlink를 RPC로 전체 실행하도록 하는 메소드 |
 | IEnumerator CoClockBlink() | 시간이 임박했을 때 시계가 깜빡이는 효과를 위한 메소드
 
