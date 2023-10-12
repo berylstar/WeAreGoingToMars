@@ -15,8 +15,6 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 
     private TextMeshProUGUI textClock;
 
-    private bool isGameOver = false;
-
     private void Start()
     {
         textClock = GameManager.Instance.textClock;
@@ -29,14 +27,9 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
 
     private IEnumerator CoStartTime()
     {
-        while (!isGameOver)
+        while (true)
         {
             mm += 1;
-
-            if (hh == 15 && mm == 30)
-            {
-                break;
-            }
 
             switch (mm)
             {
@@ -54,6 +47,12 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
                     mm = 0;
                     photonView.RPC(nameof(RPCNextRound), RpcTarget.All);
                     break;
+            }
+
+            if (hh == 15 && mm == 30)
+            {
+                photonView.RPC(nameof(RPCGameOver), RpcTarget.All);
+                break;
             }
 
             yield return delay_1s;

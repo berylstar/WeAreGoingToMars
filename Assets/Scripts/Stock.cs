@@ -169,4 +169,9 @@ public class Stock : MonoBehaviourPunCallbacks
         // "[특징주] ◎◎◎◎,\n\n구조조정 이어 소송까지...\n결국 파산 절차 밟아"
         // "[특징주] ㅁㅁㅁㅁ,\n\nK-기업의 힘 보여주나...\n파산 위기에서 소생"
     }
+
+    public void MarketClosed()
+    {
+        buttonBuy.enabled = false;
+    }
 }

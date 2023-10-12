@@ -129,6 +129,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void GameOver()
     {
         textClock.text = "CLOSED";
+
+        foreach (Stock stock in stocks)
+        {
+            stock.MarketClosed();
+        }
     }
 
     public void OnBuyStockButton(int index)
