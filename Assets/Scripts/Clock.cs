@@ -72,8 +72,7 @@ public class Clock : MonoBehaviourPunCallbacks, IPunObservable
             mm = (int)stream.ReceiveNext();
         }
 
-        if (textClock != null)
-            textClock.text = $"{hh:D2} : {mm:D2}";
+        textClock.text = $"{hh:D2} : {mm:D2}";
     }
 
     [PunRPC]

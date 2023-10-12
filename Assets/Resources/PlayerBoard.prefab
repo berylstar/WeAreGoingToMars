@@ -949,7 +949,6 @@ MonoBehaviour:
   - {fileID: 7059176460555387844}
   - {fileID: 7111793589430468255}
   - {fileID: 7894000737646398285}
-  money: 2000
 --- !u!114 &7052138386403087455
 MonoBehaviour:
   m_ObjectHideFlags: 0

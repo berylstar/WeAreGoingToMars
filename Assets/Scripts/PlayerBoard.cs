@@ -12,7 +12,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private TextMeshProUGUI textMoney;
     [SerializeField] private List<TextMeshProUGUI> textWallets;
 
-    public int money;
+    public int Money { get; private set; }
     public readonly List<int> stockHoldings = new List<int>() { 0, 0, 0, 0, 0 };
 
     private readonly int startMoney = 2000;
@@ -24,7 +24,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
         textName.text = gameObject.GetPhotonView().Owner.NickName;
 
-        money = startMoney;
+        Money = startMoney;
         for (int i = 0; i < 5; i++)
         {
             stockHoldings[i] = 0;
@@ -35,7 +35,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(money);
+            stream.SendNext(Money);
 
             for (int i = 0; i < 5; i++)
             {
@@ -44,7 +44,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            money = (int)stream.ReceiveNext();
+            Money = (int)stream.ReceiveNext();
 
             for (int i = 0; i < 5; i++)
             {
@@ -57,7 +57,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
     private void ShowPlayerStatus()
     {
-        textMoney.text = money.ToString();
+        textMoney.text = Money.ToString();
 
         for (int i = 0; i < 5; i++)
         {
@@ -67,9 +67,9 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
 
     public void TryBuyStock(Stock stock)
     {
-        if (money >= stock.costNow && !stock.isDelisting)
+        if (Money >= stock.Cost && !stock.IsDelisting)
         {
-            money -= stock.costNow;
+            Money -= stock.Cost;
             stockHoldings[stock.serialNumber] += 1;
         }
     }
@@ -78,7 +78,7 @@ public class PlayerBoard : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stockHoldings[stock.serialNumber] > 0)
         {
-            money += stock.costNow;
+            Money += stock.Cost;
             stockHoldings[stock.serialNumber] -= 1;
         }
     }

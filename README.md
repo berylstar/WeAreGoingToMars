@@ -22,6 +22,7 @@
     - ~~주식은 각각의 다양한 타입을 가지고 있으며 그 타입을 바탕으로 무작위로 주식이 변동합니다.~~ (추후 구현 예정)
     - **즉 모든 주식은 미리 변동사항이 정해져 있으며, 그 정보는 MARS MAGAZINE이 단독 입수 했다는 소식입니다 !**
     - MARS MAGAZINE은 변화하는 주식의 정보를 기사로 제공할 것 입니다. 이를 기반으로 다른 플레이어와 정보를 공유하고 주식 시장의 판도를 예측하세요.
+- **플레이타임** : 7분 이내
 - **개발 환경** : Unity 2022.3.2f1
 - **타겟 플랫폼** : PC
 - **개발 기간** `2023.10.06 ~`
@@ -108,7 +109,7 @@
 | void OnButStockButton(int index) | 각각의 주식의 매수 버튼에 할당된 메소드. |
 | void OnSellStockButton(int index) | 각각의 주식의 매도 버튼에 할당된 메소드. |
 | void ApplyDelistedStock(Stock stock) | 상장폐지된 주식 적용 |
-| void ShowNews() | 라운드 별 무작위 주식의 정보를 익명으로 공개 |
+| void ShowNews() | 라운드 별 무작위 주식의 정보 또는 이번 라운드의 정보 공개 |
 
 ### - **[PlayerBoard](Assets/Scripts/PlayerBoard.cs)**
 
@@ -143,6 +144,7 @@
 | void Deslisting() | 주식의 상장폐지 적용 |
 | string ReturnNews() | 해당 주식의 정보를 게임매니저로 리턴 |
 | void MarketClosed() | 게임이 종료되면 매도 버튼을 비활성화 |
+| int HowDoesStockChange() | 다음 라운드의 주식 변화량 반환 |
 
 ---
 <br>

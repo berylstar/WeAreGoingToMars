@@ -888,10 +888,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 1156113895}
   buttonSell: {fileID: 953204332}
   serialNumber: 2
-  type: 0
-  costNow: 700
-  isDelisting: 0
-  costGraph: 
+  initialCost: 400
 --- !u!114 &115374256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,10 +1750,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 1029419012}
   buttonSell: {fileID: 630738560}
   serialNumber: 1
-  type: 0
-  costNow: 500
-  isDelisting: 0
-  costGraph: 
+  initialCost: 600
 --- !u!114 &391728673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2079,10 +2073,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 619082492}
   buttonSell: {fileID: 948534133}
   serialNumber: 0
-  type: 0
-  costNow: 500
-  isDelisting: 0
-  costGraph: 
+  initialCost: 600
 --- !u!114 &497168103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3918,10 +3909,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 1872588782}
   buttonSell: {fileID: 2035895495}
   serialNumber: 4
-  type: 0
-  costNow: 1200
-  isDelisting: 0
-  costGraph: 
+  initialCost: 800
 --- !u!114 &940672407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7772,10 +7760,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 78815034}
   buttonSell: {fileID: 197555090}
   serialNumber: 3
-  type: 0
-  costNow: 200
-  isDelisting: 0
-  costGraph: 
+  initialCost: 1200
 --- !u!114 &1882015181
 MonoBehaviour:
   m_ObjectHideFlags: 0

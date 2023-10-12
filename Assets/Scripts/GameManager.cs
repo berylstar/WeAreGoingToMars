@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void ShowMyStatus()
     {
-        textWallet.text = $"{MyPlayer.money} $";
+        textWallet.text = $"{MyPlayer.Money} $";
 
         for (int i = 0; i < 5; i++)
         {
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void GameOver()
     {
-        textClock.text = "CLOSED";
+        textNews.text = "[CLOSED]\n\n오늘의 장 마감.";
 
         foreach (Stock stock in stocks)
         {
@@ -156,6 +156,42 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void ShowNews()
     {
-        textNews.text = stocks[Random.Range(0, stocks.Count)].ReturnNews();
+        Stock stockForNews = stocks[Random.Range(0, stocks.Count)];
+
+        if (stockForNews.IsDelisting || Random.Range(0, 10) == 0)
+        {
+            int up = 0;
+            int down = 0;
+
+            foreach (Stock stock in stocks)
+            {
+                if (stock.IsDelisting)
+                    continue;
+
+                switch (stock.HowDoesStockChange())
+                {
+                    case > 0:
+                        up += 1;
+                        break;
+
+                    case < 0:
+                        down += 1;
+                        break;
+                }
+            }
+
+            if (up < down)
+            {
+                textNews.text = $"[경제]\n'XYZ 경제 저널',\n\"잇따른 경기 침체에 찬바람불 것\"\n전문가들 {down}개주 하락 예측";
+            }
+            else
+            {
+                textNews.text = $"[경제]\n정부 새 정책 발표,\n주식 시장 활기 불어넣나?\n전문가들 {up}개주 상승 예측";
+            }   
+        }
+        else
+        {
+            textNews.text = stockForNews.ReturnNews() + $"\n{stockForNews.serialNumber}";
+        }
     }
 }

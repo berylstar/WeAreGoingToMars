@@ -26,14 +26,15 @@ public class Stock : MonoBehaviourPunCallbacks
     [SerializeField] private Button buttonSell;
 
     public int serialNumber;
-    public StockType type;
-    public int costNow;
-    public bool isDelisting;
+    // public StockType type;
+    [SerializeField] private int initialCost;
+    public int Cost { get; private set; }
+    public bool IsDelisting { get; private set; }
 
-    [SerializeField] private List<int> costGraph = new List<int>(); // 추후 SerializeField 없애고 readonly
-    private int roundIndex;
-
+    private readonly List<int> costGraph = new List<int>();
     private readonly string symbols = "!@#$%^&*+=※☆★○●◎→←↑↓↔♠♤♡♥♧♣♬♪♩♭‡†¶☞☜☎☏♨";
+
+    private int roundIndex;    
 
     private void Start()
     {
@@ -43,8 +44,9 @@ public class Stock : MonoBehaviourPunCallbacks
 
     private void InitialStock()
     {
+        Cost = initialCost;
         roundIndex = 0;
-        isDelisting = false;
+        IsDelisting = false;
 
         for (int i = 0; i < 15; i++)
         {
@@ -70,7 +72,7 @@ public class Stock : MonoBehaviourPunCallbacks
 
     private void ShowStockStatus()
     {
-        textCost.text = costNow.ToString();
+        textCost.text = Cost.ToString();
         textChange.text = ShowCostChange();
     }
 
@@ -78,7 +80,7 @@ public class Stock : MonoBehaviourPunCallbacks
     {
         int changes = costGraph[roundIndex];
 
-        if (isDelisting)
+        if (IsDelisting)
         {
             return "※상장폐지";
         }
@@ -100,7 +102,7 @@ public class Stock : MonoBehaviourPunCallbacks
     {
         roundIndex += 1;
 
-        costNow += costGraph[roundIndex];
+        Cost += costGraph[roundIndex];
 
         CheckDelisting();
 
@@ -109,15 +111,15 @@ public class Stock : MonoBehaviourPunCallbacks
 
     private void CheckDelisting()
     {
-        if (costNow <= 0)
+        if (Cost <= 0)
         {
-            isDelisting = true;
-            costNow = 0;
+            IsDelisting = true;
+            Cost = 0;
             GameManager.Instance.ApplyDelistedStock(this);
         }
-        else if (costNow > 0 && isDelisting)
+        else if (Cost > 0 && IsDelisting)
         {
-            isDelisting = false;
+            IsDelisting = false;
         }
     }
 
@@ -132,7 +134,7 @@ public class Stock : MonoBehaviourPunCallbacks
 
         if (costGraph[roundIndex + 1] == 0)
         {
-            return $"[특징주] {name},\n\n'XYZ 경제 저널' 전문가들 입 모아\n\"주가 변동 없을 것.\" 예측";
+            return $"[특징주] {name},\n\n'XYZ 경제 저널' 전문가들 입 모아\n\"이번엔 주가 변동 없을 것.\" 예측";
         }
         else if (costGraph[roundIndex] > 0)
         {
@@ -158,7 +160,7 @@ public class Stock : MonoBehaviourPunCallbacks
         }
         else
         {
-            return $"[특징주] {name},\n\n이어진 침묵 깨고 '변화' 예고\n주가 {costGraph[roundIndex + 1]}p  변동 가능성 제기";
+            return $"[특징주] {name},\n\n이어진 침묵 깨고 '변화' 예고\n주가 {Mathf.Abs(costGraph[roundIndex + 1])}p  변동 가능성 제기";
         }
 
         // "[특징주] ㅁㅁㅁㅁ,\n\n호황에 역대급 투자자 몰려\n전문가들 주가 +{0}$ 예측"
@@ -173,5 +175,10 @@ public class Stock : MonoBehaviourPunCallbacks
     public void MarketClosed()
     {
         buttonBuy.enabled = false;
+    }
+
+    public int HowDoesStockChange()
+    {
+        return costGraph[roundIndex + 1];
     }
 }
