@@ -89,7 +89,7 @@
 
 # 4. 기능 명세서
 
-### - **[LobbyPanelMain](Assets\Photon\PhotonUnityNetworking\Demos\DemoAsteroids\Scripts\Lobby\LobbyMainPanel.cs)**
+### - **[LobbyMainPanel](Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Scripts/Lobby/LobbyMainPanel.cs)**
 
 | 메소드 | 내용 |
 | -- | -- |
