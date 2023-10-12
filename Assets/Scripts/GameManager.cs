@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            textNews.text = stockForNews.ReturnNews() + $"\n{stockForNews.serialNumber}";
+            textNews.text = stockForNews.ReturnNews();
         }
     }
 }
