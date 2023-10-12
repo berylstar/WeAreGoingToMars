@@ -115,6 +115,10 @@ public class Stock : MonoBehaviourPunCallbacks
             costNow = 0;
             GameManager.Instance.ApplyDelistedStock(this);
         }
+        else if (costNow > 0 && isDelisting)
+        {
+            isDelisting = false;
+        }
     }
 
     public string ReturnNews()
